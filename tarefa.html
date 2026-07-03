@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ganhei Show - Validando Link</title>
+    
+    <!-- ANÚNCIO ADSTERRA: POPUNDER -->
+    <script src="https://pl30190901.effectivecpmnetwork.com/bf/4a/3e/bf4a3efc66ff05b548737f38163a849d.js"></script>
+
+    <!-- ANÚNCIO ADSTERRA: SOCIAL BAR -->
+    <script src="https://pl30190905.effectivecpmnetwork.com/82/a6/58/82a658371379ccb3976fa8abcc7eb1c2.js"></script>
+
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --gold: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .ad-wrapper-top {
+            width: 100%;
+            max-width: 468px;
+            min-height: 60px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .task-container {
+            width: 100%;
+            max-width: 420px;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 25px 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .task-header h2 { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+        .task-header h2 span { color: var(--accent); }
+        .task-header p { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; }
+
+        .timer-box {
+            background: rgba(15, 23, 42, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .timer-number { font-size: 42px; font-weight: 800; color: var(--accent); margin-bottom: 5px; }
+        .timer-text { font-size: 13px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;}
+
+        .btn-action {
+            width: 100%;
+            background: #475569;
+            color: rgba(255, 255, 255, 0.4);
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: not-allowed;
+            transition: all 0.3s ease;
+        }
+        .btn-action.ready {
+            background: var(--success);
+            color: #0f172a;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .fake-content {
+            margin-top: 25px;
+            text-align: left;
+            background: rgba(15, 23, 42, 0.3);
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+        .fake-content h3 { color: var(--text-main); margin-bottom: 6px; font-size: 14px; }
+
+        .ad-wrapper-bottom {
+            width: 100%;
+            max-width: 468px;
+            min-height: 60px;
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .alert-task {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--danger);
+            color: #fca5a5;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            margin-top: 15px;
+            display: none;
+            text-align: center;
+        }
+
+        #splash-screen {
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background: #0f172a; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 9999;
+        }
+        .spinner {
+            width: 40px; height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.1); border-top-color: var(--accent);
+            border-radius: 50%; animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div id="splash-screen">
+        <div class="spinner"></div>
+        <p style="margin-top: 15px; font-size: 14px; color: var(--text-muted);">Sincronizando com os servidores...</p>
+    </div>
+
+    <!-- ADSTERRA: BANNER SUPERIOR (468x60) -->
+    <div class="ad-wrapper-top">
+        <script>
+            try {
+                atOptions = {
+                    'key' : '5b58d460411b2d45424a73b99bcb9159',
+                    'format' : 'iframe',
+                    'height' : 60,
+                    'width' : 468,
+                    'params' : {}
+                };
+                document.write('<scr' + 'ipt type="text/javascript" src="https://www.highperformanceformat.com/5b58d460411b2d45424a73b99bcb9159/invoke.js"></scr' + 'ipt>');
+            } catch(e) {}
+        </script>
+    </div>
+
+    <div class="task-container">
+        <div class="task-header">
+            <h2>Ganhei<span>Show</span> Links</h2>
+            <p>Aguarde o carregamento do patrocinador para resgatar os valores.</p>
+        </div>
+
+        <div class="timer-box">
+            <div class="timer-number" id="countdown-num">15</div>
+            <div class="timer-text" id="countdown-status">Sincronizando...</div>
+        </div>
+
+        <button id="claim-btn" class="btn-action" onclick="claimReward()" disabled>
+            Verificando limites de segurança...
+        </button>
+
+        <div id="task-error-box" class="alert-task"></div>
+
+        <div class="fake-content">
+            <h3>🔒 Validação Antifraude:</h3>
+            <p>Interaja com os elementos da tela para validar seu tráfego de dados. Chaves robóticas automatizadas anularão o depósito do saldo automaticamente.</p>
+        </div>
+
+        <button class="btn-action" style="background: transparent; border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); margin-top: 15px; cursor: pointer;" onclick="window.location.href='index.html'">
+            ⬅️ Voltar ao Painel Geral
+        </button>
+    </div>
+
+    <!-- ADSTERRA: BANNER INFERIOR (468x60) -->
+    <div class="ad-wrapper-bottom">
+        <script>
+            try {
+                atOptions = {
+                    'key' : '5b58d460411b2d45424a73b99bcb9159',
+                    'format' : 'iframe',
+                    'height' : 60,
+                    'width' : 468,
+                    'params' : {}
+                };
+                document.write('<scr' + 'ipt type="text/javascript" src="https://www.highperformanceformat.com/5b58d460411b2d45424a73b99bcb9159/invoke.js"></scr' + 'ipt>');
+            } catch(e) {}
+        </script>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getDatabase, ref, onValue, set, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC6URoPssZemFyTDU_0u1bAHyhimk4f2d0",
+            authDomain: "ganheishow.firebaseapp.com",
+            databaseURL: "https://ganheishow-default-rtdb.firebaseio.com",
+            projectId: "ganheishow",
+            storageBucket: "ganheishow.firebasestorage.app",
+            messagingSenderId: "458543082047",
+            appId: "1:458543082047:web:d4c7fd8f91001315dee68a",
+            measurementId: "G-ZQ5CRQ05YR"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const database = getDatabase(app);
+
+        let userUid = null;
+        let isTimeFinished = false;
+        let timeLeft = 15;
+        let loopCronometro = null;
+        
+        let valorPorClique = 0.05; 
+        let limiteCliquesDiarios = 25;
+        let userBalance = 0.000;
+        let userIsVip = false;
+        let totalCliquesHoje = 0;
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                userUid = user.uid;
+                sincronizarDadosTarefa();
+            } else {
+                window.location.href = 'index.html';
+            }
+        });
+
+        function sincronizarDadosTarefa() {
+            // 1. Escuta Parâmetros Globais do Admin
+            onValue(ref(database, 'configuracoes'), (snapshot) => {
+                if (snapshot.exists()) {
+                    const cData = snapshot.val();
+                    valorPorClique = parseFloat(cData.valor_por_clique) || 0.05;
+                    limiteCliquesDiarios = parseInt(cData.limite_cliques) || 25;
+                }
+            });
+
+            // 2. Escuta Informações de Saldo e VIP do Usuário
+            onValue(ref(database, `users/${userUid}`), (snap) => {
+                if (!snap.exists()) return;
+                const data = snap.val();
+                userBalance = data.balance || 0.000;
+                userIsVip = data.is_vip || false;
+                document.getElementById('splash-screen').style.display = 'none';
+            });
+
+            // 3. Escuta a contagem de cliques em Tempo Real ligada ao Admin
+            onValue(ref(database, `users/${userUid}/cliques_diarios`), (cliquesSnap) => {
+                totalCliquesHoje = 0;
+                if (cliquesSnap.exists()) {
+                    totalCliquesHoje = cliquesSnap.val().total || 0;
+                }
+
+                if (totalCliquesHoje >= limiteCliquesDiarios) {
+                    bloquearPorLimiteAtingido();
+                } else {
+                    document.getElementById('task-error-box').style.display = "none";
+                    if (!loopCronometro && !isTimeFinished) {
+                        startCountdown();
+                    }
+                }
+            });
+        }
+
+        function bloquearPorLimiteAtingido() {
+            if (loopCronometro) clearInterval(loopCronometro);
+            
+            document.getElementById('countdown-num').innerText = "⚠️";
+            document.getElementById('countdown-status').innerText = "Limite Atingido";
+            
+            const mainBtn = document.getElementById('claim-btn');
+            mainBtn.disabled = true;
+            mainBtn.className = "btn-action";
+            mainBtn.style.background = "#475569";
+            mainBtn.innerText = "Rodada Finalizada";
+
+            const errorBox = document.getElementById('task-error-box');
+            errorBox.style.display = "block";
+            errorBox.innerHTML = `<strong>Limite atingido!</strong><br>Aguarde a liberação manual do administrador no painel master para continuar.`;
+        }
+
+        function startCountdown() {
+            const counterElement = document.getElementById('countdown-num');
+            const statusElement = document.getElementById('countdown-status');
+            const mainBtn = document.getElementById('claim-btn');
+
+            statusElement.innerText = "Análise comportamental ativa...";
+            mainBtn.innerText = "Aguarde os anúncios carregarem...";
+
+            loopCronometro = setInterval(() => {
+                timeLeft--;
+                counterElement.innerText = timeLeft;
+
+                if (timeLeft <= 0) {
+                    clearInterval(loopCronometro);
+                    isTimeFinished = true;
+                    
+                    const recompensaExibida = userIsVip ? (valorPorClique * 2) : valorPorClique;
+                    
+                    counterElement.innerText = "✓";
+                    counterElement.style.color = "var(--success)";
+                    statusElement.innerText = `Pronto! Resgate disponível.`;
+                    
+                    mainBtn.disabled = false;
+                    mainBtn.className = "btn-action ready";
+                    mainBtn.innerText = `🎁 COMPUTAR MEU SALDO (R$ ${recompensaExibida.toFixed(3)})`;
+                }
+            }, 1000);
+        }
+
+        window.claimReward = async function() {
+            if (!userUid || !isTimeFinished || totalCliquesHoje >= limiteCliquesDiarios) return;
+            
+            const mainBtn = document.getElementById('claim-btn');
+            mainBtn.disabled = true;
+            mainBtn.innerText = "Processando transação segura...";
+
+            try {
+                const ganhoFinal = userIsVip ? (valorPorClique * 2) : valorPorClique;
+                const novoSaldo = userBalance + ganhoFinal;
+                const novoTotalCliques = totalCliquesHoje + 1;
+
+                // Payload limpo sem travas de horas automáticas
+                let payloadCliques = { total: novoTotalCliques };
+
+                await update(ref(database, `users/${userUid}`), { balance: novoSaldo });
+                await set(ref(database, `users/${userUid}/cliques_diarios`), payloadCliques);
+
+                alert(`Perfeito! R$ ${ganhoFinal.toFixed(3)} foram adicionados à sua conta.`);
+                window.location.href = 'index.html';
+            } catch (error) {
+                alert("Erro ao validar. Tente novamente.");
+                mainBtn.disabled = false;
+                mainBtn.innerText = "🎁 COMPUTAR MEU SALDO";
+            }
+        }
+    </script>
+</body>
+</html>
